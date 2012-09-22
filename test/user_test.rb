@@ -40,13 +40,20 @@ class StudentTest < Test::Unit::TestCase
     assert(!user.owns?('house'), 'User should not own a house')
   end
 
-  def test_should_print_offers
-    user = University::User.named('Sam')
-    user.create_item('house', 100)
-    user.offers()
+  def test_should_return_offers
+    user = University::User.named('Jack Sparrow')
+    user.create_item('rum', 100)
+    user.create_item('sword', 50)
+    user.create_item('black pearl', 1000)
+    user.create_item('gold medallion', 20)
+    offers = user.offers()
+    assert(offers.size == 0, 'Should have no items to sell')
 
-    user.offer('house')
-    user.offers()
+    user.offer('rum')
+    user.offer('gold medallion')
+    offers = user.offers()
+    assert(offers.size == 2, 'Should have 2 items to sell')
+    assert(offers.all? { |item| item.name == 'gold medallion' || item.name == 'rum' }, 'Should sell rum and medallion')
   end
 
   def test_should_buy_item
@@ -71,8 +78,8 @@ class StudentTest < Test::Unit::TestCase
     frodo.offer('ring')
     frodo.sell('ring', sam)
 
-    assert(!sam.owns?('ring'), 'Sam shouldn\'t own the ring now!')
-    assert(frodo.owns?('ring'), 'Frodo shouldn\'t own the ring anymore!')
+    assert(!sam.owns?('ring'), 'Sam shouldn\'t own the ring now')
+    assert(frodo.owns?('ring'), 'Frodo shouldn\'t own the ring anymore')
     assert(sam.credits == 100, 'Sam should pay 50 credits')
     assert(frodo.credits == 100, 'Frodo should get 50 credits')
   end

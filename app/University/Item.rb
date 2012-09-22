@@ -31,7 +31,7 @@ module University
 
     def to_s
       # string interpolation
-      "#{name} costs #{price}"
+      "#{name.capitalize} costs #{price} credits"
     end
   end
 end

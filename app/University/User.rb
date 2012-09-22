@@ -1,5 +1,5 @@
 module University
-  require '../app/University/Item'
+  require '../app/University/item'
 
   class User
 
@@ -19,20 +19,59 @@ module University
     end
 
     def to_s
-      # string interpolation
       "#{name} #{credits}"
-    end
-
-    def add_credits( credits_to_add )
-      credits += credits_to_add
-    end
-
-    def remove_credits( credits_to_remove )
-      credits -= credits_to_remove
     end
 
     def create_item( name, price )
       items.push(University::Item.create(self, name, price))
+    end
+
+    def remove_item( name )
+      self.items = items.map { |item| item.name == name ? nil : item } .compact
+    end
+
+    def owns?( item_name )
+       item = self.items.select { |item| item.name == item_name }.pop
+       !item.nil? && item.owner == self
+    end
+
+    def offer( name )
+      self.items.each { |item| item.name == name ? item.activate : nil }
+    end
+
+    def offers()
+      self.items.select { |item| item.is_active? }
+    end
+
+    def sells?( item_name )
+      item = self.items.select { |item| item.name == item_name }.pop
+
+      !item.nil? && item.is_active?
+    end
+
+    def sell( item_name, buyer)
+      item = self.items.select { |item| item.name == item_name }.pop
+
+      if item.nil?
+        puts "Transaction failed because #{name} does not own \'#{item_name}\'"
+        return nil
+      elsif ! item.is_active?
+        puts "Transaction failed because #{name} does not sale \'#{item_name}\'"
+        return nil
+      elsif buyer.credits < item.price
+        puts "Transaction failed because #{buyer.name} does not have enough money"
+        return nil
+      end
+
+      buyer.credits -= item.price
+      self.credits += item.price
+      self.items.delete(item)
+      buyer.add_item(item)
+      item.owner = buyer
+    end
+
+    def add_item( item )
+      self.items.push(item)
     end
 
   end
