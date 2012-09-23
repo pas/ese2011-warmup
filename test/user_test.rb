@@ -62,10 +62,9 @@ class StudentTest < Test::Unit::TestCase
 
     frodo.create_item('ring', 50)
     frodo.offer('ring')
-    frodo.sell('ring', sam)
-
-    assert(sam.owns?('ring'), 'Sam should own the ring now!')
-    assert(!frodo.owns?('ring'), 'Frodo shouldn\'t onw the ring anymore!')
+    assert(frodo.sell('ring', sam), 'Frodo should sell ring')
+    assert(sam.owns?('ring'), 'Sam should own the ring now')
+    assert(!frodo.owns?('ring'), 'Frodo shouldn\'t onw the ring anymore')
     assert(sam.credits == 50, 'Sam should pay 50 credits')
     assert(frodo.credits == 150, 'Frodo should get 50 credits')
   end
@@ -76,12 +75,12 @@ class StudentTest < Test::Unit::TestCase
 
     frodo.create_item('ring', 200)
     frodo.offer('ring')
-    frodo.sell('ring', sam)
 
+    assert(!frodo.sell('ring', sam), 'Frodo should not sell ring')
     assert(!sam.owns?('ring'), 'Sam shouldn\'t own the ring now')
     assert(frodo.owns?('ring'), 'Frodo shouldn\'t own the ring anymore')
-    assert(sam.credits == 100, 'Sam should pay 50 credits')
-    assert(frodo.credits == 100, 'Frodo should get 50 credits')
+    assert(sam.credits == 100, 'Sam should not pay credits')
+    assert(frodo.credits == 100, 'Frodo should not get credits')
   end
 
   def test_shouldnt_buy_object
@@ -90,12 +89,12 @@ class StudentTest < Test::Unit::TestCase
 
     frodo.create_item('ring', 200)
     frodo.offer('ring')
-    frodo.sell('sword', sam)
 
+    assert(!frodo.sell('sword', sam), 'Frodo should not sell ring')
     assert(!sam.owns?('sword'), 'Sam shouldn\'t own a sword now!')
     assert(!sam.owns?('ring'), 'Sam shouldn\'t own the ring now!')
     assert(frodo.owns?('ring'), 'Frodo shouldn\'t own the ring anymore!')
-    assert(sam.credits == 100, 'Sam should pay 50 credits')
-    assert(frodo.credits == 100, 'Frodo should get 50 credits')
+    assert(sam.credits == 100, 'Sam should not pay credits')
+    assert(frodo.credits == 100, 'Frodo should not get credits')
   end
 end

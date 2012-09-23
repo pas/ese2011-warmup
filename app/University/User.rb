@@ -54,13 +54,13 @@ module University
 
       if item.nil?
         puts "Transaction failed because #{name} does not own \'#{item_name}\'"
-        return nil
+        return FALSE
       elsif ! item.is_active?
         puts "Transaction failed because #{name} does not sale \'#{item_name}\'"
-        return nil
+        return FALSE
       elsif buyer.credits < item.price
         puts "Transaction failed because #{buyer.name} does not have enough money"
-        return nil
+        return FALSE
       end
 
       buyer.credits -= item.price
@@ -68,6 +68,7 @@ module University
       self.items.delete(item)
       buyer.add_item(item)
       item.owner = buyer
+      TRUE
     end
 
     def add_item( item )
