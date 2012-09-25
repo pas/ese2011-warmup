@@ -2,6 +2,8 @@ module University
   class Item
     # generate getter and setter for name and grades
     attr_accessor :name, :price, :owner
+
+    # Access only through activate() and deactivate()
     @active
 
     # factory method (constructor) on the class
@@ -30,7 +32,6 @@ module University
     end
 
     def to_s
-      # string interpolation
       "#{name.capitalize} costs #{price} credits"
     end
   end

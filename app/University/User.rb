@@ -3,6 +3,8 @@ module University
 
   class User
 
+    INITIAL_CREDIT = 100
+
     # generate getter and setter for name and grades
     attr_accessor :name, :credits, :items
 
@@ -10,7 +12,7 @@ module University
     def self.named( name )
       user = self.new
       user.name = name
-      user.credits = 100
+      user.credits = INITIAL_CREDIT
       user
     end
 

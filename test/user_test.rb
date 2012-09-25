@@ -2,7 +2,7 @@ require 'test/unit'
 require '../app/University/user'
 
 # syntax for inheritance
-class StudentTest < Test::Unit::TestCase
+class UserTest < Test::Unit::TestCase
 
   def test_should_have_name
     user = University::User.named('John')
