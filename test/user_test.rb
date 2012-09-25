@@ -53,7 +53,8 @@ class UserTest < Test::Unit::TestCase
     user.offer('gold medallion')
     offers = user.offers()
     assert(offers.size == 2, 'Should have 2 items to sell')
-    assert(offers.all? { |item| item.name == 'gold medallion' || item.name == 'rum' }, 'Should sell rum and medallion')
+    assert( (offers[0].name == 'rum' && offers[1].name == 'gold medallion') ||
+            (offers[1].name == 'rum' && offers[0].name == 'gold medallion'), 'Should sell rum AND medallion')
   end
 
   def test_should_buy_item
@@ -62,6 +63,7 @@ class UserTest < Test::Unit::TestCase
 
     frodo.create_item('ring', 50)
     frodo.offer('ring')
+
     assert(frodo.sell('ring', sam), 'Frodo should sell ring')
     assert(sam.owns?('ring'), 'Sam should own the ring now')
     assert(!frodo.owns?('ring'), 'Frodo shouldn\'t onw the ring anymore')
